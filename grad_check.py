@@ -47,6 +47,13 @@ def sanity_check():
     gradient_check(quad, np.array(123.456))      # scalar test
     gradient_check(quad, np.random.randn(3,))    # 1-D test
     gradient_check(quad, np.random.randn(4,5))   # 2-D test
+    # additional sanity checks
+    gradient_check(quad, np.random.randn(3,4,5)) # 3-D test
+    gradient_check(quad, np.random.randn(3,4,5,6)) # 4-D test
+    tahn = lambda x: (np.sum(np.tanh(x)), 1 - np.tanh(x) ** 2)
+    gradient_check(tahn, np.random.randn(4,5))
+    leaky_relu = lambda x: (np.sum(np.maximum(0.01 * x, x)), np.maximum(0.01, np.sign(x)))
+    gradient_check(leaky_relu, np.random.randn(4,5))
     print()
 
 if __name__ == '__main__':
