@@ -4,7 +4,7 @@ STUDENT={'name': 'YOUR NAME',
          'ID': 'YOUR ID NUMBER'}
 
 def classifier_output(x, params):
-    # YOUR CODE HERE.
+    # TODO: YOU CODE HERE
     return probs
 
 def predict(x, params):
@@ -26,7 +26,7 @@ def loss_and_gradients(x, y, params):
     gU: matrix, gradients of U
     gb_tag: vector, gradients of b_tag
     """
-    # YOU CODE HERE
+    # TODO: YOU CODE HERE
     return ...
 
 def create_classifier(in_dim, hid_dim, out_dim):

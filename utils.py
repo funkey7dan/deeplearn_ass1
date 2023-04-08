@@ -3,9 +3,10 @@
 import random
 def read_data(fname):
     data = []
-    for line in file(fname):
-        label, text = line.strip().lower().split("\t",1)
-        data.append((label, text))
+    with open(fname) as file:
+        for line in file:
+            label, text = line.strip().lower().split("\t",1)
+            data.append((label, text))
     return data
 
 def text_to_bigrams(text):

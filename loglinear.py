@@ -9,13 +9,19 @@ def softmax(x):
     x: a n-dim vector (numpy array)
     returns: an n-dim vector (numpy array) of softmax values
     """
-    # YOUR CODE HERE
     # Your code should be fast, so use a vectorized implementation using numpy,
     # don't use any loops.
     # With a vectorized implementation, the code should be no more than 2 lines.
     #
     # For numeric stability, use the identify you proved in Ex 2 Q1.
-    return x
+    
+    # because softmax(x) = softmax(x-c) for any constant c,
+    # we can subtract the maximum value of x from each element of x.
+    # this does not change the result of softmax, but it makes the numbers in x much smaller,
+    # which is more numerically stable.
+    
+    x -= max(x)
+    return np.exp(x)/sum(np.exp(x))
     
 
 def classifier_output(x, params):
@@ -24,7 +30,7 @@ def classifier_output(x, params):
     of a log-linear classifier with given params on input x.
     """
     W,b = params
-    # YOUR CODE HERE.
+    probs = softmax(np.dot(W.T,x)+b)
     return probs
 
 def predict(x, params):
@@ -51,7 +57,15 @@ def loss_and_gradients(x, y, params):
     gb: vector, gradients of b
     """
     W,b = params
-    # YOU CODE HERE
+    # TODO: YOU CODE HERE
+    # Calculate the gradient of W and b
+    out = classifier_output(x, params)
+    
+    loss = -np.log(out[y])
+    gb = out.copy()
+    gb[y] -= 1 # gradient of b = p(y|x) - 1
+    gW = np.outer(x,out.copy()) # gradient of W = x * (p(y|x) - 1)
+    gW[:, y] -= x
     return loss,[gW,gb]
 
 def create_classifier(in_dim, out_dim):
@@ -67,17 +81,18 @@ if __name__ == '__main__':
     # Sanity checks for softmax. If these fail, your softmax is definitely wrong.
     # If these pass, it may or may not be correct.
     test1 = softmax(np.array([1,2]))
-    print(test1)
+    print(f'test 1: {test1}')
     assert np.amax(np.fabs(test1 - np.array([0.26894142,  0.73105858]))) <= 1e-6
-
+    print(f'test 1: Pased')
     test2 = softmax(np.array([1001,1002]))
-    print(test2)
+    print(f'test 2: {test1}')
     assert np.amax(np.fabs(test2 - np.array( [0.26894142, 0.73105858]))) <= 1e-6
+    print(f'test 2: Pased')
 
     test3 = softmax(np.array([-1001,-1002])) 
-    print(test3)
+    print(f'test 3: {test3}')
     assert np.amax(np.fabs(test3 - np.array([0.73105858, 0.26894142]))) <= 1e-6
-
+    print(f'test 3: Pased')
 
     # Sanity checks. If these fail, your gradient calculation is definitely wrong.
     # If they pass, it is likely, but not certainly, correct.

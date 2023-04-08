@@ -20,9 +20,16 @@ def gradient_check(f, x):
         ### modify x[ix] with h defined above to compute the numerical gradient.
         ### if you change x, make sure to return it back to its original state for the next iteration.
         ### YOUR CODE HERE:
-        temp_x1 = x[ix] + h
-        temp_x2 = x[ix] - h
-        numeric_gradient = (f(temp_x1)[0] - f(temp_x2)[0]) / (2 * h)
+        x1 = x.copy()
+        x1[ix] +=  h
+
+        x2 = x.copy()
+        x2[ix] -= h
+
+        fx1, _ = f(x1)
+        fx2, _ = f(x2)
+
+        numeric_gradient = np.divide(np.subtract(fx1, fx2), (2.0 * h))
         ### END YOUR CODE
 
         # Compare gradients

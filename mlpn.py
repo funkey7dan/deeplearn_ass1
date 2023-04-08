@@ -4,7 +4,7 @@ STUDENT={'name': 'YOUR NAME',
          'ID': 'YOUR ID NUMBER'}
 
 def classifier_output(x, params):
-    # YOUR CODE HERE.
+    # TODO: YOU CODE HERE
     return probs
 
 def predict(x, params):
@@ -27,7 +27,7 @@ def loss_and_gradients(x, y, params):
     (of course, if we request a linear classifier (ie, params is of length 2),
     you should not have gW2 and gb2.)
     """
-    # YOU CODE HERE
+    # TODO: YOU CODE HERE
     return ...
 
 def create_classifier(dims):
