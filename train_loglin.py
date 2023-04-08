@@ -2,10 +2,12 @@ import loglinear as ll
 import random
 from utils import *
 import numpy as np
+import os
 
 
 STUDENT={'name': 'YOUR NAME',
          'ID': 'YOUR ID NUMBER'}
+
 
 
 def feats_to_vec(features):
@@ -70,7 +72,7 @@ if __name__ == '__main__':
     # Initialize the training arguments
     train_data = TRAIN
     dev_data = DEV
-    num_iterations = 10
+    num_iterations = 20
     learning_rate = 0.001
     in_dim = len(F2I.keys()) # the number of features we input
     out_dim = len(L2I.keys()) # the number of labels, in our case the different languages we have.
@@ -78,4 +80,11 @@ if __name__ == '__main__':
     # Create a log linear classifier with the specified input and output dimensions, repressented as the parameters W and b.
     params = ll.create_classifier(in_dim, out_dim)
     trained_params = train_classifier(train_data, dev_data, num_iterations, learning_rate, params)
+    TEST = [(l,text_to_bigrams(t)) for l,t in read_data("test")]
+    I2L = {v: k for k, v in L2I.items()}
+    predictions = [I2L[ll.predict(feats_to_vec(feature), trained_params)] for label, feature in TEST]
+    with open("test.pred", "w") as f:
+        f.writelines(line + '\n' for line in predictions)
+        
+    
 
