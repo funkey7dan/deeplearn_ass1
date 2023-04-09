@@ -15,6 +15,8 @@ def read_data(fname):
 def text_to_bigrams(text):
     return ["%s%s" % (c1, c2) for c1, c2 in zip(text, text[1:])]
 
+def text_to_unigrams(text):
+    return ["%s" % c1 for c1 in zip(text)]
 
 TRAIN = [(l, text_to_bigrams(t)) for l, t in read_data("train")]
 DEV = [(l, text_to_bigrams(t)) for l, t in read_data("dev")]
