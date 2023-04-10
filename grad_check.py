@@ -9,7 +9,7 @@ def gradient_check(f, x):
     - f should be a function that takes a single argument and outputs the cost and its gradients
     - x is the point (numpy array) to check the gradient at
     """ 
-    fx, grad = f(x) # Evaluate function value at original point
+    fx, grad = f(x)  # Evaluate function value at original point
     h = 1e-4
 
     # Iterate over all indexes in x
@@ -21,7 +21,7 @@ def gradient_check(f, x):
         ### if you change x, make sure to return it back to its original state for the next iteration.
         ### YOUR CODE HERE:
         x1 = x.copy()
-        x1[ix] +=  h
+        x1[ix] += h
 
         x2 = x.copy()
         x2[ix] -= h
