@@ -1,0 +1,16 @@
+Questions:
+1. Can you get better accuracies on the language identication task using the multi-layer perceptron?
+
+2. Switch the feature set of the language identication from letter-bigrams to letter-unigrams (single letters). What's the best you can do with the log-linear model with these features? What's the best you can do with the MLP?
+
+3. Verify that your MLP can learn the XOR function (you can see a training-set for XOR in the file xor_data.py). How many iterations does it take to correctly solve xor?
+
+Answers:
+1. Yes, we can get a better accuracy when using the MLP. With the same l.r (0.001) and number of iterations (20), we get these results:
+LogLinear:
+iteration 19: train_loss=0.22, train_accuracy=0.9, dev_accuracy=0.86
+VS. MLP:
+iteration 19: train_loss=0.01, train_accuracy=1.0, dev_accuracy=0.87
+We see that with the MLP model we get train accuracy of 1.0, and very small loss comparing to the simple log linear model.
+
+2. 
