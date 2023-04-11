@@ -34,6 +34,7 @@ def gradient_check(f, x):
 
         # Compare gradients
         reldiff = abs(numeric_gradient - grad[ix]) / max(1, abs(numeric_gradient), abs(grad[ix]))
+
         if reldiff > 1e-5:
             print("Gradient check failed.")
             print("First gradient error found at index %s" % str(ix))
