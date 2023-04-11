@@ -117,9 +117,9 @@ def create_classifier(in_dim, hid_dim, out_dim):
     return:
     a flat list of 4 elements, W, b, U, b_tag.
     """
-    W1 = np.random.randn(in_dim, hid_dim) * 0.01  # W1 matrix
+    W1 = np.random.randn(in_dim, hid_dim) # W1 matrix
     b1 = np.zeros(hid_dim)  # b
-    W2 = np.random.randn(hid_dim, out_dim) * 0.01  # W2 matrix
+    W2 = np.random.randn(hid_dim, out_dim)  # W2 matrix
     b2 = np.zeros(out_dim)  # b_tag
     return [W1, b1, W2, b2]
 
