@@ -7,9 +7,27 @@ import numpy as np
 STUDENT={'name': 'YOUR NAME',
          'ID': 'YOUR ID NUMBER'}
 
+
+# NOTE - in order to run Unigram, turn to False
+isBigram = True
+
+if isBigram:
+    vocab = utils.vocab_bi
+    L2I = utils.L2I
+    F2I = utils.F2I_BI
+    TRAIN = utils.TRAIN_BI
+    DEV = utils.DEV_BI
+else:
+    vocab = utils.vocab_uni
+    L2I = utils.L2I
+    F2I = utils.F2I_UNI
+    TRAIN = utils.TRAIN_UNI
+    DEV = utils.DEV_UNI
+
+
 def feats_to_vec(features):
     # Should return a numpy vector of features.
-    vec = np.zeros(len(vocab))
+    vec = np.zeros(len(F2I))
     for f in features:
         if f in F2I:
             vec[F2I[f]] = 1
@@ -28,6 +46,7 @@ def accuracy_on_dataset(dataset, params):
             bad += 1
     return good / (good + bad)
 
+
 def train_classifier(train_data, dev_data, num_iterations, learning_rate, params):
     """
     Create and train a classifier, and return the parameters.
@@ -39,7 +58,7 @@ def train_classifier(train_data, dev_data, num_iterations, learning_rate, params
     params: list of parameters (initial values)
     """
     for I in range(num_iterations):
-        cum_loss = 0.0 # total loss in this iteration.
+        cum_loss = 0.0  # total loss in this iteration.
         random.shuffle(train_data)
         for label, features in train_data:
             x = feats_to_vec(features) # convert features to a vector.
@@ -69,8 +88,9 @@ if __name__ == '__main__':
     dev_data = DEV
     num_iterations = 20
     learning_rate = 0.001
+
     # the number of features we input
-    in_dim = len(utils.F2I.keys())
+    in_dim = len(F2I.keys())
     # the number of labels, in our case the different languages we have.
     out_dim = len(utils.L2I.keys())
     
@@ -78,6 +98,7 @@ if __name__ == '__main__':
     # represented as the parameters W and b.
     params = ll.create_classifier(in_dim, out_dim)
     trained_params = train_classifier(train_data, dev_data, num_iterations, learning_rate, params)
+
     TEST = [(l, text_to_bigrams(t)) for l, t in read_data("test")]
     I2L = {v: k for k, v in L2I.items()}
     predictions = [I2L[ll.predict(feats_to_vec(feature), trained_params)] for label, feature in TEST]

@@ -13,9 +13,7 @@ def softmax(x):
     # Your code should be fast, so use a vectorized implementation using numpy,
     # don't use any loops.
     # With a vectorized implementation, the code should be no more than 2 lines.
-    #
     # For numeric stability, use the identify you proved in Ex 2 Q1.
-
     # because softmax(x) = softmax(x-c) for any constant c,
     # we can subtract the maximum value of x from each element of x.
     # this does not change the result of softmax, but it makes the numbers in x much smaller,
@@ -29,7 +27,7 @@ def softmax(x):
 
 
 def tanh_grad(x):
-    return 1. -np.tanh(x) ** 2  # sech^2{x}
+    return 1. - np.tanh(x) ** 2
 
 
 def classifier_output(x, params):

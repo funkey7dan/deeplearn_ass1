@@ -12,9 +12,7 @@ def softmax(x):
     # Your code should be fast, so use a vectorized implementation using numpy,
     # don't use any loops.
     # With a vectorized implementation, the code should be no more than 2 lines.
-    #
     # For numeric stability, use the identify you proved in Ex 2 Q1.
-    
     # because softmax(x) = softmax(x-c) for any constant c,
     # we can subtract the maximum value of x from each element of x.
     # this does not change the result of softmax, but it makes the numbers in x much smaller,
@@ -60,8 +58,9 @@ def loss_and_gradients(x, y, params):
     """
 
     # Forward
-    # Calculate the gradient of W and b
-    y_hat = classifier_output(x, params)
+    W, b = params
+    z = np.dot(W.T, x) + b
+    y_hat = softmax(z)
 
     # one hot vector since we use hard CE
     y_vec = np.zeros(len(y_hat))
@@ -73,14 +72,21 @@ def loss_and_gradients(x, y, params):
     # Backward
     dLoss_dA = -y_vec / y_hat  # ∂Loss\∂a -> vector
 
-    # calculate the derivative of the loss w.r.t W:
-    # ∂Loss\∂W = ∂Loss\∂a DOT ∂a\∂W
+    # calculate the Jacobian matrix of the softmax function at z
+    S = np.reshape(y_hat, (-1, 1))
+    J = np.diagflat(S) - np.dot(S, S.T)
 
-    # ∂a\∂W = x.T
-    gW = np.outer(x, dLoss_dA)
-    gb = dLoss_dA
+    # calculate the gradient of the loss with respect to z.
+    # the g of loss w.r.t y_hat. this gives in dl_dz_i the sum of the chain rule mult.
+    dLoss_dz = np.dot(J, dLoss_dA)
 
-    return loss, [gW, gb]
+    # calculate the gradient of z with respect to W
+    dLoss_dW = np.outer(x, dLoss_dz)
+
+    # calculate the gradient of z with respect to b. b is simply added making dz_db = 1
+    dLoss_dB = dLoss_dz
+
+    return loss, [dLoss_dW, dLoss_dB]
 
 def create_classifier(in_dim, out_dim):
     """

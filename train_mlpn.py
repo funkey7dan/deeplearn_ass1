@@ -9,10 +9,10 @@ STUDENT={'name': 'YOUR NAME',
 
 def feats_to_vec(features):
     # Should return a numpy vector of features.
-    vec = np.zeros(len(vocab))
+    vec = np.zeros(len(vocab_bi))
     for f in features:
-        if f in F2I:
-            vec[F2I[f]] = 1
+        if f in F2I_BI:
+            vec[F2I_BI[f]] = 1
     return vec
 
 def accuracy_on_dataset(dataset, params):
@@ -64,13 +64,13 @@ if __name__ == '__main__':
     # and call train_classifier.
     
     # Initialize the training arguments
-    train_data = TRAIN
-    dev_data = DEV
+    train_data = TRAIN_BI
+    dev_data = DEV_BI
     num_iterations = 20
     learning_rate = 0.01
 
     # the number of features we input
-    in_dim = len(utils.F2I.keys())
+    in_dim = len(utils.F2I_BI.keys())
 
     # the number of labels, in our case the different languages we have.
     out_dim = len(utils.L2I.keys())
