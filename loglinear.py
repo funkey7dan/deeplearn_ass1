@@ -59,17 +59,27 @@ def loss_and_gradients(x, y, params):
     gb: vector, gradients of b
     """
 
+    # Forward
     # Calculate the gradient of W and b
-    out = classifier_output(x, params)
+    y_hat = classifier_output(x, params)
+
+    # one hot vector since we use hard CE
+    y_vec = np.zeros(len(y_hat))
+    y_vec[y] = 1
 
     # HARD cross entropy loss
-    loss = -np.log(out[y])
-    gb = out.copy()
-    # gradient of b = p(y|x) - 1
-    gb[y] -= 1
-    # gradient of W = x * (p(y|x) - 1)
-    gW = np.outer(x, out.copy())
-    gW[:, y] -= x
+    loss = -np.log(y_hat[y])
+
+    # Backward
+    dLoss_dA = -y_vec / y_hat  # ∂Loss\∂a -> vector
+
+    # calculate the derivative of the loss w.r.t W:
+    # ∂Loss\∂W = ∂Loss\∂a DOT ∂a\∂W
+
+    # ∂a\∂W = x.T
+    gW = np.outer(x, dLoss_dA)
+    gb = dLoss_dA
+
     return loss, [gW, gb]
 
 def create_classifier(in_dim, out_dim):
@@ -77,9 +87,10 @@ def create_classifier(in_dim, out_dim):
     returns the parameters (W,b) for a log-linear classifier
     with input dimension in_dim and output dimension out_dim.
     """
-    W = np.zeros((in_dim, out_dim))
+    W = np.random.randn(in_dim, out_dim) * 0.01  # W matrix
     b = np.zeros(out_dim)
     return [W, b]
+
 
 if __name__ == '__main__':
     # Sanity checks for softmax. If these fail, your softmax is definitely wrong.

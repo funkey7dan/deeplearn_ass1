@@ -91,8 +91,8 @@ def loss_and_gradients(x, y, params):
     # NOTE - this is NOT Jacobian matrix again -> this time only one neuron is affected by the multiplication
 
     # ∂Loss\∂W2 = ∂Loss\∂h2 DOT ∂h2\∂w2
-    gW2 = dLoss_dW2 = np.outer(a1, dLoss_dH2)
-    gb2 = dLoss_dB2 = dLoss_dH2
+    gW2 = np.outer(a1, dLoss_dH2)
+    gb2 = dLoss_dH2
 
     # dH2_dA1 is Jacobian matrix = W2.T
     dLoss_dA1 = np.dot(W2, dLoss_dH2)
@@ -104,8 +104,8 @@ def loss_and_gradients(x, y, params):
     dLoss_dH1 = dLoss_dA1 * dA1_dH1
 
     # ∂Loss\∂W1 = ∂Loss\∂h1 DOT ∂h1\∂w1
-    gW1 = dLoss_dW1 = np.outer(x, dLoss_dH1)
-    gb1 = dLoss_dB1 = dLoss_dH1
+    gW1 = np.outer(x, dLoss_dH1)
+    gb1 = dLoss_dH1
 
     return loss, [gW1, gb1, gW2, gb2]
 
@@ -119,9 +119,9 @@ def create_classifier(in_dim, hid_dim, out_dim):
     return:
     a flat list of 4 elements, W, b, U, b_tag.
     """
-    W1 = np.random.randn(in_dim, hid_dim) * 0.01  # W matrix
+    W1 = np.random.randn(in_dim, hid_dim) * 0.01  # W1 matrix
     b1 = np.zeros(hid_dim)  # b
-    W2 = np.random.randn(hid_dim, out_dim) * 0.01  # U matrix
+    W2 = np.random.randn(hid_dim, out_dim) * 0.01  # W2 matrix
     b2 = np.zeros(out_dim)  # b_tag
     return [W1, b1, W2, b2]
 

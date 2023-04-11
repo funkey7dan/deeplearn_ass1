@@ -59,6 +59,7 @@ def train_classifier(train_data, dev_data, num_iterations, learning_rate, params
               f' train_accuracy={round(train_accuracy,2)}, dev_accuracy={round(dev_accuracy,2)}')
     return params
 
+
 if __name__ == '__main__':
     # write code to load the train and dev sets, set up whatever you need,
     # and call train_classifier.
