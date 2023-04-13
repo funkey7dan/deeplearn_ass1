@@ -1,7 +1,10 @@
 import numpy as np
 
-STUDENT = {'name': 'YOUR NAME',
-           'ID': 'YOUR ID NUMBER'}
+
+STUDENT1={'name': 'Coral Kuta',
+         'ID': 'CORAL_ID'}
+STUDENT2={'name': 'Daniel Bronfman ',
+         'ID': 'DANIEL_ID '}
 
 
 def softmax(x):
@@ -140,7 +143,8 @@ def create_classifier(dims):
     params = []
     for i in range(1, len(dims)):
         params.append(np.random.randn(dims[i - 1], dims[i]) * 0.01)
-        params.append(np.zeros(dims[i]))
+        #params.append(np.zeros(dims[i]))
+        params.append(np.random.randn(dims[i]) * 0.01)
     return params
 
 
