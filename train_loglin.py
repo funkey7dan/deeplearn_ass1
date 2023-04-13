@@ -4,9 +4,10 @@ from utils import *
 import numpy as np
 
 
-STUDENT={'name': 'YOUR NAME',
-         'ID': 'YOUR ID NUMBER'}
-
+STUDENT1={'name': 'Coral Kuta',
+         'ID': 'CORAL_ID'}
+STUDENT2={'name': 'Daniel Bronfman ',
+         'ID': 'DANIEL_ID '}
 
 # NOTE - in order to run Unigram, turn to False
 isBigram = True
