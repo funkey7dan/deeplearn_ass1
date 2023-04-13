@@ -4,8 +4,10 @@
 import random
 from collections import Counter
 
-STUDENT={'name': 'Coral Kuta, ',
-         'ID': '208649186, '}
+STUDENT1={'name': 'Coral Kuta',
+         'ID': 'CORAL_ID'}
+STUDENT2={'name': 'Daniel Bronfman ',
+         'ID': 'DANIEL_ID '}
 
 def read_data(fname):
     data = []
