@@ -4,8 +4,11 @@ from utils import *
 import numpy as np
 from xor_data import data as xor_data
 
-STUDENT={'name': 'YOUR NAME',
-         'ID': 'YOUR ID NUMBER'}
+
+STUDENT1={'name': 'Coral Kuta',
+         'ID': 'CORAL_ID'}
+STUDENT2={'name': 'Daniel Bronfman ',
+         'ID': 'DANIEL_ID '}
 
 # NOTE - in order to run XOR, turn to True
 isXor = False
@@ -90,11 +93,35 @@ def train_classifier(train_data, dev_data, num_iterations, learning_rate, params
                   f' train_accuracy={round(train_accuracy,2)}, dev_accuracy={round(dev_accuracy,2)}')
 
         else:
+            #pass
             print(f'iteration {round(I, 2)}: train_loss={round(train_loss,2)},'
                   f' train_accuracy={round(train_accuracy,2)}')
 
+        if isXor:
+            t1 = (mlp.predict(np.array([0,0]), params)==1)
+            t2 = (mlp.predict(np.array([1,0]), params)==0)
+            t3 = (mlp.predict(np.array([0,1]), params)==0)
+            t4 = (mlp.predict(np.array([1,1]), params)==1)
+            if t1 and t2 and t3 and t4:
+                print(f'Trained XOR in num_iterations={I}, learning_rate={learning_rate}')
+                break
     return params
 
+def find_best_hyperparams(model, train_data, dev_data, in_dim, out_dim):
+    hyper_params = []
+    for i in range(1, 10):
+        for j in range(1, 10):
+            for k in range(1, 10):
+                num_iterations = i * 10
+                learning_rate = j * 0.01
+                hid_dim = k * 10
+                params = mlp.create_classifier(in_dim, hid_dim, out_dim)
+                trained_params = train_classifier(train_data, dev_data, num_iterations, learning_rate, params)
+                print(f'num_iterations={num_iterations}, learning_rate={learning_rate},hid_dim={hid_dim}, dev_accuracy={round(accuracy_on_dataset(dev_data, trained_params),2)}')
+                hyper_params.append((num_iterations, learning_rate, hid_dim,accuracy_on_dataset(dev_data, trained_params)))
+                hyper_params.sort(key=lambda x: x[2], reverse=True)
+    print(hyper_params)
+    
 
 if __name__ == '__main__':
     # write code to load the train and dev sets, set up whatever you need,
@@ -102,33 +129,38 @@ if __name__ == '__main__':
 
     if isXor:
         train_data = xor_data
-        num_iterations = 150
+        num_iterations = 200
         learning_rate = 1
         in_dim = 2
         out_dim = 2
-        hid_dim = 6
+        hid_dim = 2
         params = mlp.create_classifier(in_dim, hid_dim, out_dim)
         trained_params = train_classifier(train_data, None, num_iterations, learning_rate, params)
+
 
 
     else:
         # Initialize the training arguments
         train_data = TRAIN
         dev_data = DEV
-        num_iterations = 60
-        learning_rate = 0.0005
+        num_iterations = 8
+        learning_rate = 0.005
 
         # the number of features we input
         in_dim = len(F2I.keys())
         # the number of labels, in our case the different languages we have.
         out_dim = len(L2I.keys())
-        hid_dim = in_dim // 100
-
+        hid_dim = (in_dim+out_dim) // 2
+        #find_best_hyperparams(mlp, train_data, dev_data, in_dim, out_dim)
+        #exit()
         # Create a log linear classifier with the specified input and output dimensions,
         # represented as the parameters W and b.
-        params = mlp.create_classifier(in_dim, hid_dim, out_dim)
+        params = mlp.create_classifier(in_dim, hid_dim, out_dim,isXor)
 
         trained_params = train_classifier(train_data, dev_data, num_iterations, learning_rate, params)
+        
+        # Find best hyper-parameters:
+        
 
         TEST = [(l, text_to_bigrams(t)) for l, t in read_data("test")]
         I2L = {v: k for k, v in L2I.items()}
